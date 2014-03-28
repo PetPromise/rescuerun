@@ -15,6 +15,9 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    // Load assemble from npm
+    grunt.loadNpmTasks('assemble');
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -58,10 +61,11 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= config.app %>/{,*/}*.html',
+                    '<%= config.app %>/templates/{,*/}*.hbs',
                     '.tmp/styles/{,*/}*.css',
                     '<%= config.app %>/images/{,*/}*'
-                ]
+                ],
+                tasks: ['assemble']
             }
         },
 
@@ -230,6 +234,24 @@ module.exports = function (grunt) {
             css: ['<%= config.dist %>/styles/{,*/}*.css']
         },
 
+        assemble: {
+            options: {
+                flatten: true,
+                layout: '<%= config.app %>/templates/layouts/default.hbs',
+                partials: ['<%= config.app %>/templates/partials/*.hbs'],
+            },
+            pages: {
+                files: {
+                    '<%= config.app %>/': ['<%= config.app %>/templates/pages/*.hbs', '!<%= config.app %>/templates/pages/index.hbs']
+                }
+            },
+            index: {
+                files: {
+                    '<%= config.app %>/': ['<%= config.app %>/templates/pages/index.hbs']
+                }
+            }
+        },
+
         // The following *-min tasks produce minified files in the dist folder
         imagemin: {
             dist: {
@@ -238,7 +260,10 @@ module.exports = function (grunt) {
                     cwd: '<%= config.app %>/images',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
                     dest: '<%= config.dist %>/images'
-                }]
+                }],
+                options: {
+                    cache: false
+                }
             }
         },
 
@@ -394,6 +419,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'assemble',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',

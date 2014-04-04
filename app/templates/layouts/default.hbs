@@ -1,3 +1,11 @@
+---
+day: 24th
+year: 2014
+registration: 8:00 AM to 9:30 AM
+start-time: 10:00 AM
+fee: $30
+top-fundraisers: 12 Noon
+---
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -38,11 +46,12 @@
             <div id="mainleft">
                 {{> body }}
             </div>
-            {{> navigation }}
-            {{> sponsors }}
-            <div class="clear"></div>
+            <div id="mainright">
+                {{> navigation }}
+            </div>
+            {{> sponsor-list }}
+            {{> footer }}
         </div>
-        {{> footer }}
     </div>
 
 

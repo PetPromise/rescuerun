@@ -15,8 +15,9 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-    // Load assemble from npm
+    // Load tasks from npm
     grunt.loadNpmTasks('assemble');
+    grunt.loadNpmTasks('grunt-build-control');
 
     // Define the configuration for all the tasks
     grunt.initConfig({
@@ -338,8 +339,28 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
-                        'styles/fonts/{,*/}*.*'
+                        'styles/fonts/{,*/}*.*',
+                        'documents/{,*/}*.*'
                     ]
+                }]
+            },
+            heroku: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: 'heroku',
+                    dest: '<%= config.dist %>',
+                    src: [
+                        '../package.json',
+                        'Procfile',
+                        'web.js'
+                    ]
+                }, {
+                    expand: true,
+                    dot: true,
+                    cwd: '.',
+                    dest: '<%= config.dist %>',
+                    src: [ 'package.json' ],
                 }]
             },
             styles: {
@@ -379,6 +400,20 @@ module.exports = function (grunt) {
                 'imagemin',
                 'svgmin'
             ]
+        },
+
+        buildcontrol: {
+            options: {
+                dir: 'dist',
+                push: true,
+                commit: true
+            },
+            heroku: {
+                options: {
+                    remote: 'git@heroku.petpromise:rescuerun.git',
+                    branch: 'master'
+                }
+            }
         }
     });
 
@@ -427,6 +462,7 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'copy:dist',
+        'copy:heroku',
         'modernizr',
         'rev',
         'usemin',

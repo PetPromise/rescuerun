@@ -410,7 +410,7 @@ module.exports = function (grunt) {
             },
             heroku: {
                 options: {
-                    remote: 'git@heroku.petpromise:rescuerun.git',
+                    remote: 'git@heroku.com:rescuerun.git',
                     branch: 'master'
                 }
             }

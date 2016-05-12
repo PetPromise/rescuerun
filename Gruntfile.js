@@ -344,6 +344,15 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
+            facebook: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= config.app %>',
+                    dest: '<%= config.dist %>',
+                    src: [ 'images/billboard.png' ]
+                }]
+            },
             heroku: {
                 files: [{
                     expand: true,
@@ -466,7 +475,8 @@ module.exports = function (grunt) {
         'modernizr',
         'rev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'copy:facebook'
     ]);
 
     grunt.registerTask('default', [
